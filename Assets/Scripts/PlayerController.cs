@@ -4,13 +4,16 @@ using UnityEngine;
 using Unity.Netcode;
 
 [RequireComponent(typeof(PlayerMotor))]
-public class PlayerController :  NetworkBehaviour
+public class PlayerController :  MonoBehaviour
 {
     [SerializeField]
     private float speed = 5f;
 
     [SerializeField]
     private float lookSentivity = 3f;
+
+    [SerializeField]
+    private float trustForce = 1000f;
 
     private PlayerMotor motor;
     // Start is called before the first frame update
@@ -51,5 +54,16 @@ public class PlayerController :  NetworkBehaviour
 
         //Apply rotation
         motor.RotateCamera(_cameraRotation);
+
+        //Calculater trust force based on player input
+        Vector3 _trusterForce = Vector3.zero;
+       
+        if (Input.GetButton("Jump"))
+        {
+            _trusterForce = Vector3.up * trustForce;
+        }
+
+        //Apply Trust force
+        motor.ApplyTruster(_trusterForce);
     }
 }

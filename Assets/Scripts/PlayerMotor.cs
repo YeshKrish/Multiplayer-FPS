@@ -13,6 +13,8 @@ public class PlayerMotor : MonoBehaviour
 
     private Vector3 camerRotation = Vector3.zero;
 
+    private Vector3 trustForce = Vector3.zero;
+
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -39,6 +41,12 @@ public class PlayerMotor : MonoBehaviour
         rotation = _rotation;
     }
 
+    //Get a force vector for trusters
+    public void ApplyTruster(Vector3 _trusterForce)
+    {
+        trustForce = _trusterForce;
+    }
+
     //Gets the rotation vector for the camera
     public void RotateCamera(Vector3 _cameraRotation)
     {
@@ -59,6 +67,11 @@ public class PlayerMotor : MonoBehaviour
         if(velocity != Vector3.zero)
         {
             rb.MovePosition(transform.position + velocity * Time.fixedDeltaTime);
+        }
+
+        if(trustForce != Vector3.zero)
+        {
+            rb.AddForce(trustForce * Time.fixedDeltaTime, ForceMode.Acceleration);
         }
     }
 
