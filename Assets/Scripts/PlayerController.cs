@@ -4,7 +4,8 @@ using UnityEngine;
 using Unity.Netcode;
 
 [RequireComponent(typeof(PlayerMotor))]
-public class PlayerController :  MonoBehaviour
+[RequireComponent(typeof(ConfigurableJoint))]
+public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private float speed = 5f;
@@ -15,11 +16,25 @@ public class PlayerController :  MonoBehaviour
     [SerializeField]
     private float trustForce = 1000f;
 
+    [Header("Spring Sertings:")]
+
+    [SerializeField]
+    private float jointSpring = 20f;
+
+    [SerializeField]
+    private float jointMaxForece = 40f;
+
     private PlayerMotor motor;
+
+    private ConfigurableJoint joint;
     // Start is called before the first frame update
     void Start()
     {
         motor = GetComponent<PlayerMotor>();
+
+        joint = GetComponent<ConfigurableJoint>();
+
+        SetJointSettings(jointSpring);
     }
 
     // Update is called once per frame
@@ -50,20 +65,33 @@ public class PlayerController :  MonoBehaviour
         //calculate camera rotation as a 3D vector (turning around)
         float _xRot = Input.GetAxisRaw("Mouse Y");
 
-        Vector3 _cameraRotation = new Vector3(_xRot, 0f, 0f) * lookSentivity;
+        float _cameraRotationX = _xRot * lookSentivity;
 
         //Apply rotation
-        motor.RotateCamera(_cameraRotation);
+        motor.RotateCamera(_cameraRotationX);
 
         //Calculater trust force based on player input
         Vector3 _trusterForce = Vector3.zero;
-       
+
         if (Input.GetButton("Jump"))
         {
             _trusterForce = Vector3.up * trustForce;
+            SetJointSettings(0f);
+        }
+        else
+        {
+            SetJointSettings(jointSpring);
         }
 
         //Apply Trust force
         motor.ApplyTruster(_trusterForce);
+    }
+
+    void SetJointSettings(float _jointSpring)
+    {
+        joint.yDrive = new JointDrive { 
+            positionSpring = _jointSpring, 
+            maximumForce = jointMaxForece
+        }; 
     }
 }
