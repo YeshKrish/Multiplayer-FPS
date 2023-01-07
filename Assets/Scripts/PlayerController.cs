@@ -22,7 +22,7 @@ public class PlayerController :  NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsOwner) return;
+        //  if (!IsOwner) return;
 
         //Calculate movement velocity as a 3D vector
         float _hInput = Input.GetAxisRaw("Horizontal");
