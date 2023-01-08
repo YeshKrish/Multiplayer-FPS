@@ -49,8 +49,8 @@ public class PlayerShoot : NetworkBehaviour
     }
 
     [ServerRpc]
-    void PlayerShotServerRpc(string _ID)
+    void PlayerShotServerRpc(string _playerID)
     {
-        Debug.Log(_ID + "has been shot");  
+        Debug.Log(_playerID + "has been shot");  
     }
 }

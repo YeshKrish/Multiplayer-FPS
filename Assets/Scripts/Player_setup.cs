@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
+[RequireComponent(typeof(Player))]
 public class Player_setup : NetworkBehaviour
 {
 
@@ -29,13 +30,18 @@ public class Player_setup : NetworkBehaviour
             
         }
 
-        RegisterPlayer();
+        ListenChanges();
     }
 
-    void RegisterPlayer()
+    void ListenChanges()
     {
-        string _ID = "Player" + GetComponent<NetworkObject>().NetworkObjectId;
-        transform.name = _ID;
+        string _netID = GetComponent<NetworkObject>().NetworkObjectId.ToString();
+
+        Player _player = GetComponent<Player>();
+
+        Debug.Log(_netID + " " + _player);
+
+        GameManager.instance.RegisterPlayer(_netID, _player);
     }
 
     void AssignRemoteLayer()
@@ -57,11 +63,7 @@ public class Player_setup : NetworkBehaviour
         {
             sceneCamera.gameObject.SetActive(true);
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameManager.instance.UnRegisterPlayer(transform.name);
     }
 }
