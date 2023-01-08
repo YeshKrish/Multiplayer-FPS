@@ -7,6 +7,9 @@ public class Player_setup : NetworkBehaviour
     [SerializeField]
     Behaviour[] componentsToDisable;
 
+    [SerializeField]
+    string remoteLayerName = "RemotePlayer";
+
     Camera sceneCamera;
 
     // Start is called before the first frame update
@@ -14,10 +17,8 @@ public class Player_setup : NetworkBehaviour
     {
         if (!IsLocalPlayer)
         {
-            for (int i = 0; i < componentsToDisable.Length; i++)
-            {
-                componentsToDisable[i].enabled = false;
-            }
+            DisableComponets();
+            AssignRemoteLayer();
         }
         else
         {
@@ -26,6 +27,19 @@ public class Player_setup : NetworkBehaviour
                 sceneCamera.gameObject.SetActive(false);
             }
             
+        }
+    }
+
+    void AssignRemoteLayer()
+    {
+        gameObject.layer = LayerMask.NameToLayer(remoteLayerName);
+    }
+
+    void DisableComponets()
+    {
+        for (int i = 0; i < componentsToDisable.Length; i++)
+        {
+            componentsToDisable[i].enabled = false;
         }
     }
 

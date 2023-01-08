@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 855489120487176973}
   - component: {fileID: 855489120487176974}
   - component: {fileID: 855489120487176975}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 855489120675095813}
   - component: {fileID: 855489120675095814}
   - component: {fileID: 855489120675095815}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855489121343769127}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,7 +235,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855489121570994557}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,9 +277,10 @@ GameObject:
   - component: {fileID: 1796029805716467711}
   - component: {fileID: -4251692576071191445}
   - component: {fileID: 7174483930398876451}
-  m_Layer: 0
+  - component: {fileID: 5461094685773367880}
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -343,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 855489122129287742}
+  cameraRotationLimit: 85
 --- !u!114 &855489121899566978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,6 +517,26 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5461094685773367880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855489121899566982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c566488a554a240a5ca62fcdd18479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon:
+    name: Glock
+    damage: 10
+    range: 100
+  cam: {fileID: 855489122129287742}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2147483647
 --- !u!1 &855489122129287730
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +549,7 @@ GameObject:
   - component: {fileID: 855489122129287742}
   - component: {fileID: 855489122129287728}
   - component: {fileID: 5000496722089152793}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +668,7 @@ GameObject:
   - component: {fileID: 855489122228299449}
   - component: {fileID: 855489122228299450}
   - component: {fileID: 855489122228299451}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +765,7 @@ GameObject:
   - component: {fileID: 855489122280406732}
   - component: {fileID: 855489122280406733}
   - component: {fileID: 855489122280406734}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
