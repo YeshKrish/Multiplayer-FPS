@@ -3,6 +3,8 @@ using Unity.Netcode;
 
 public class PlayerShoot : NetworkBehaviour
 {
+    private const string PLAYER_TAG = "Player";
+
     public PlayerWeapon weapon;
 
     [SerializeField]
@@ -29,20 +31,26 @@ public class PlayerShoot : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
     void Shoot()
     {
+        if (!IsClient)
+        {
+            return;
+        }
         RaycastHit _hit;
+
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, layerMask))
         {
-            //We hit something
-            Debug.Log("Player Shoot: We hit:" + _hit.collider.name);
+            if (_hit.collider.tag == PLAYER_TAG)
+            {
+                PlayerShotServerRpc(_hit.collider.name);
+            }
         }
     }
 
-    //[Command]
-    void CmdPlayerShot (string _ID)
+    [ServerRpc]
+    void PlayerShotServerRpc(string _ID)
     {
-        Debug.Log(_ID + "has been shot");
+        Debug.Log(_ID + "has been shot");  
     }
 }
