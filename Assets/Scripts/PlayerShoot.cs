@@ -43,14 +43,18 @@ public class PlayerShoot : NetworkBehaviour
         {
             if (_hit.collider.tag == PLAYER_TAG)
             {
-                PlayerShotServerRpc(_hit.collider.name);
+                PlayerShotServerRpc(_hit.collider.name, weapon.damage);
             }
         }
     }
 
     [ServerRpc]
-    void PlayerShotServerRpc(string _playerID)
+    void PlayerShotServerRpc(string _playerID, int _damage)
     {
-        Debug.Log(_playerID + "has been shot");  
+        Debug.Log(_playerID + "has been shot");
+
+        Player _player =  GameManager.instance.GetPlayer(_playerID);
+
+        _player.TakeDamage(_damage);
     }
 }
