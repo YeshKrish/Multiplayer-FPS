@@ -12,7 +12,13 @@ public class Player : NetworkBehaviour
     }
 
     [SerializeField]
+    private GameObject spawnPoint;
+
+    [SerializeField]
     private int maxHealth = 100;
+
+    [SerializeField]
+    private GameObject spwanPoint;
 
     [SerializeField]
     private Behaviour[] disableOnDeath;
@@ -20,7 +26,7 @@ public class Player : NetworkBehaviour
 
     private NetworkVariable<int> currentHealth = new NetworkVariable<int>();
 
-    // Start is called before the first frame update
+
     public void Setup()
     {
         wasEnabled = new bool[disableOnDeath.Length];
@@ -96,14 +102,17 @@ public class Player : NetworkBehaviour
         Debug.Log(transform.name + " is Dead");
 
         //call respawn method
+        StartCoroutine(Respawn());
     }
 
     private IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
-        SetDefaults();
-        //Transform _spawnPoint = NetworkObject.Spawn(bool destroyWithScene = true);
-    }
-  
+        Transform spawnedPointTransform =  Instantiate(spwanPoint.transform);
+        spawnedPointTransform.GetComponent<NetworkObject>().Spawn(true);
+        transform.position = spwanPoint.transform.position;
+        Debug.Log("I am Respawned");
+        SetDefaults();       
+    }  
 }
