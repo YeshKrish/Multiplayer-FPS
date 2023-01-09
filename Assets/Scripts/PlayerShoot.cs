@@ -55,6 +55,6 @@ public class PlayerShoot : NetworkBehaviour
 
         Player _player =  GameManager.instance.GetPlayer(_playerID);
 
-        _player.TakeDamage(_damage);
+        _player.TakeDamageClientRpc(_damage);
     }
 }

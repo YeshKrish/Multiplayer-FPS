@@ -30,6 +30,7 @@ public class Player_setup : NetworkBehaviour
             
         }
 
+        GetComponent<Player>().Setup();
         ListenChanges();
     }
 

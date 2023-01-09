@@ -534,7 +534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     name: Glock
-    damage: 10
+    damage: 40
     range: 100
   cam: {fileID: 855489122129287742}
   layerMask:
@@ -553,6 +553,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  disableOnDeath:
+  - {fileID: 855489121899566978}
+  - {fileID: 5461094685773367880}
 --- !u!1 &855489122129287730
 GameObject:
   m_ObjectHideFlags: 0
