@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    private const string PLAYER_ID_PREFIX = "Player";
-
     public static GameManager instance;
 
-    private static Dictionary<string, Player> players = new Dictionary<string, Player>();
+    public MatchSettings matchSettings;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -20,6 +18,12 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    #region Player Tracking
+
+    private const string PLAYER_ID_PREFIX = "Player";
+
+    private static Dictionary<string, Player> players = new Dictionary<string, Player>();
 
     public void RegisterPlayer(string _netID, Player _player)
     {
@@ -40,6 +44,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     //private void OnGUI()
     //{
     //    GUILayout.BeginArea(new Rect(200, 200, 200, 500));
@@ -53,4 +58,5 @@ public class GameManager : MonoBehaviour
     //    GUILayout.EndVertical();
     //    GUILayout.EndArea();
     //}
+    #endregion
 }

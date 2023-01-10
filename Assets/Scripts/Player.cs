@@ -18,9 +18,6 @@ public class Player : NetworkBehaviour
     private int maxHealth = 100;
 
     [SerializeField]
-    private GameObject spwanPoint;
-
-    [SerializeField]
     private Behaviour[] disableOnDeath;
     private bool[] wasEnabled;
 
@@ -102,17 +99,20 @@ public class Player : NetworkBehaviour
         Debug.Log(transform.name + " is Dead");
 
         //call respawn method
-        StartCoroutine(Respawn());
+        StartCoroutine(Respawn(transform.name));
     }
 
-    private IEnumerator Respawn()
+    private IEnumerator Respawn(string _playerID)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnDelay);
 
-        Transform spawnedPointTransform =  Instantiate(spwanPoint.transform);
+        Player _player = GameManager.instance.GetPlayer(_playerID);
+        Debug.Log("The player who dies is:" + _player.transform.name);
+        Transform spawnedPointTransform =  Instantiate(spawnPoint.transform);
         spawnedPointTransform.GetComponent<NetworkObject>().Spawn(true);
-        transform.position = spwanPoint.transform.position;
+        _player.transform.position = spawnPoint.transform.position;
         Debug.Log("I am Respawned");
         SetDefaults();       
     }  
+
 }
