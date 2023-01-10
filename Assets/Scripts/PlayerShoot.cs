@@ -33,7 +33,7 @@ public class PlayerShoot : NetworkBehaviour
 
     void Shoot()
     {
-        if (!IsClient)
+        if (!IsClient && !IsLocalPlayer)
         {
             return;
         }
