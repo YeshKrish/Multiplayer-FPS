@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour
     }
 
     [SerializeField]
-    private GameObject spawnPoint;
+    private Transform spawnPoint;
 
     [SerializeField]
     private int maxHealth = 100;
@@ -109,7 +109,6 @@ public class Player : NetworkBehaviour
     private IEnumerator Respawn(string _playerID)
     {
         yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnDelay);
-        SetDefaults();
         SpawningServerRpc(_playerID);
        
     }
@@ -117,12 +116,18 @@ public class Player : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void SpawningServerRpc(string _playerID)
     {
+        Transform spawnedPointTransform = Instantiate(spawnPoint);
+        spawnedPointTransform.GetComponent<NetworkObject>().Spawn(true);
+        SpawnClientRpc(_playerID);   
+    }
+
+    [ClientRpc]
+    void SpawnClientRpc(string _playerID)
+    {
         Player _player = GameManager.GetPlayer(_playerID);
         Debug.Log("The player who dies is:" + _player.transform.name);
-        Transform spawnedPointTransform = Instantiate(spawnPoint.transform);
-        spawnedPointTransform.GetComponent<NetworkObject>().Spawn(true);
-        _player.transform.position = spawnPoint.transform.position;
-        Debug.Log("I am Respawned");
-        SetDefaults(); 
+        _player.transform.position = spawnPoint.position;
+        Debug.Log("I am Respawned" + _player.name + "Position:" + _player.transform.position);
+        SetDefaults();
     }
 }
