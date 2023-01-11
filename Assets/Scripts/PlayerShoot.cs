@@ -33,14 +33,15 @@ public class PlayerShoot : NetworkBehaviour
 
     void Shoot()
     {
-        //if (!IsClient && !IsLocalPlayer)
-        //{
-        //    return;
-        //}
+        if (!IsClient && !IsLocalPlayer)
+        {
+            return;
+        }
         RaycastHit _hit;
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, layerMask))
         {
+          
             if (_hit.collider.tag == PLAYER_TAG)
             {
                 PlayerShotServerRpc(_hit.collider.name, weapon.damage);
@@ -53,7 +54,7 @@ public class PlayerShoot : NetworkBehaviour
     {
         Debug.Log(_playerID + "has been shot");
 
-        Player _player =  GameManager.instance.GetPlayer(_playerID);
+        Player _player =  GameManager.GetPlayer(_playerID);
 
         _player.TakeDamageClientRpc(_damage);
     }

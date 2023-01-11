@@ -43,7 +43,7 @@ public class Player_setup : NetworkBehaviour
 
         Debug.Log(_netID + " " + _player);
 
-        GameManager.instance.RegisterPlayer(_netID, _player);
+        GameManager.RegisterPlayer(_netID, _player);
     }
 
     void AssignRemoteLayer()
@@ -66,6 +66,6 @@ public class Player_setup : NetworkBehaviour
             sceneCamera.gameObject.SetActive(true);
         }
 
-        GameManager.instance.UnRegisterPlayer(transform.name);
+        GameManager.UnRegisterPlayer(transform.name);
     }
 }

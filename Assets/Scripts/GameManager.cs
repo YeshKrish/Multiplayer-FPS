@@ -9,13 +9,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null)
         {
-            instance = this;
+            Debug.LogError("More than one GameManager in scene.");
         }
         else
         {
-            Destroy(this.gameObject);
+            instance = this;
         }
     }
 
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private static Dictionary<string, Player> players = new Dictionary<string, Player>();
 
-    public void RegisterPlayer(string _netID, Player _player)
+    public static void RegisterPlayer(string _netID, Player _player)
     {
         string _playerID = PLAYER_ID_PREFIX + _netID;
 
@@ -33,30 +33,30 @@ public class GameManager : MonoBehaviour
         _player.transform.name = _playerID;
     }
 
-    public void UnRegisterPlayer(string _playerID)
+    public static void UnRegisterPlayer(string _playerID)
     {
         players.Remove(_playerID);
     }
 
-    public Player GetPlayer(string _playerID)
+    public static Player GetPlayer(string _playerID)
     {
         return players[_playerID];
     }
 
 
 
-    //private void OnGUI()
-    //{
-    //    GUILayout.BeginArea(new Rect(200, 200, 200, 500));
-    //    GUILayout.BeginVertical();
+    private void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(200, 200, 200, 500));
+        GUILayout.BeginVertical();
 
-    //    foreach (string _playerID in players.Keys)
-    //    {
-    //        GUILayout.Label(_playerID + " _ " + players[_playerID].transform.name);
-    //    }
+        foreach (string _playerID in players.Keys)
+        {
+            GUILayout.Label(_playerID + " _ " + players[_playerID].transform.name);
+        }
 
-    //    GUILayout.EndVertical();
-    //    GUILayout.EndArea();
-    //}
+        GUILayout.EndVertical();
+        GUILayout.EndArea();
+    }
     #endregion
 }

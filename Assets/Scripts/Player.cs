@@ -21,8 +21,12 @@ public class Player : NetworkBehaviour
     private Behaviour[] disableOnDeath;
     private bool[] wasEnabled;
 
-    private NetworkVariable<int> currentHealth = new NetworkVariable<int>();
-
+    private NetworkVariable<int> _currentHealth = new NetworkVariable<int>();
+    public int currentHealth
+    {
+        get { return _currentHealth.Value; }
+        protected set { _currentHealth.Value = value; }
+    }
 
     public void Setup()
     {
@@ -48,9 +52,9 @@ public class Player : NetworkBehaviour
 
     public void SetDefaults()
     {
-        _isDead.Value = false; 
+        isDead = false;
 
-        currentHealth.Value = maxHealth;
+        currentHealth = maxHealth;
 
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
@@ -67,14 +71,14 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void TakeDamageClientRpc(int _amount)
     {
-        if (_isDead.Value)
+        if (isDead)
             return;
 
-        currentHealth.Value -= _amount;
+        currentHealth -= _amount;
 
-        Debug.Log(transform.name + "now has" + currentHealth.Value + "health");
+        Debug.Log(transform.name + "has" + currentHealth + "health");
 
-        if(currentHealth.Value <= 0)
+        if(currentHealth <= 0)
         {
             Die();
         }
@@ -82,7 +86,7 @@ public class Player : NetworkBehaviour
 
     private void Die()
     {
-        _isDead.Value = true;
+        isDead = true;
 
         //Disable Components
         for (int i = 0; i < disableOnDeath.Length; i++)
@@ -105,14 +109,20 @@ public class Player : NetworkBehaviour
     private IEnumerator Respawn(string _playerID)
     {
         yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnDelay);
+        SetDefaults();
+        SpawningServerRpc(_playerID);
+       
+    }
 
-        Player _player = GameManager.instance.GetPlayer(_playerID);
+    [ServerRpc(RequireOwnership = false)]
+    void SpawningServerRpc(string _playerID)
+    {
+        Player _player = GameManager.GetPlayer(_playerID);
         Debug.Log("The player who dies is:" + _player.transform.name);
-        Transform spawnedPointTransform =  Instantiate(spawnPoint.transform);
+        Transform spawnedPointTransform = Instantiate(spawnPoint.transform);
         spawnedPointTransform.GetComponent<NetworkObject>().Spawn(true);
         _player.transform.position = spawnPoint.transform.position;
         Debug.Log("I am Respawned");
-        SetDefaults();       
-    }  
-
+        SetDefaults(); 
+    }
 }
