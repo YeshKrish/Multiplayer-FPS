@@ -34,6 +34,7 @@ public class Player_setup : NetworkBehaviour
         ListenChanges();
     }
 
+
     void ListenChanges()
     {
         string _netID = GetComponent<NetworkObject>().NetworkObjectId.ToString();

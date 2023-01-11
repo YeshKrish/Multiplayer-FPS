@@ -33,10 +33,10 @@ public class PlayerShoot : NetworkBehaviour
 
     void Shoot()
     {
-        if (!IsClient && !IsLocalPlayer)
-        {
-            return;
-        }
+        //if (!IsClient && !IsLocalPlayer)
+        //{
+        //    return;
+        //}
         RaycastHit _hit;
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, layerMask))
