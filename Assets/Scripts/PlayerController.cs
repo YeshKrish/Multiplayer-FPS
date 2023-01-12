@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(ConfigurableJoint))]
 public class PlayerController : MonoBehaviour
@@ -24,15 +25,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jointMaxForece = 40f;
 
+    //Component Caching
     private PlayerMotor motor;
-
     private ConfigurableJoint joint;
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
         motor = GetComponent<PlayerMotor>();
 
         joint = GetComponent<ConfigurableJoint>();
+
+        animator = GetComponent<Animator>();
 
         SetJointSettings(jointSpring);
     }
@@ -43,16 +48,19 @@ public class PlayerController : MonoBehaviour
         //  if (!IsOwner) return;
 
         //Calculate movement velocity as a 3D vector
-        float _hInput = Input.GetAxisRaw("Horizontal");
-        float _vInput = Input.GetAxisRaw("Vertical");
+        float _hInput = Input.GetAxis("Horizontal");
+        float _vInput = Input.GetAxis("Vertical");
 
         Vector3 _movHorizontal = transform.right * _hInput;
         Vector3 _movVertical = transform.forward * _vInput;
 
         //Final movement vector
-        Vector3 _velocity = (_movHorizontal + _movVertical).normalized * speed;
+        Vector3 _velocity = (_movHorizontal + _movVertical) * speed;
 
         motor.Move(_velocity);
+
+        //Animate movement
+        animator.SetFloat("ForwardVelocity", _vInput);
 
         //calculate rotation as a 3D vector (turning around)
         float _yRot = Input.GetAxisRaw("Mouse X");
