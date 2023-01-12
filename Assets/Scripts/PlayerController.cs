@@ -25,6 +25,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jointMaxForece = 40f;
 
+    //Animation variables
+    float velocity = 0.0f;
+    float minVelocity = 0.0f;
+    float maxVelocity = 1.0f;
+
+    public float acceleration = 1.0f;
+    public float deceleration = 1.0f;
+
+    int velocityHash;
+
     //Component Caching
     private PlayerMotor motor;
     private ConfigurableJoint joint;
@@ -33,6 +43,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        velocityHash = Animator.StringToHash("ForwardVelocity");
+
         motor = GetComponent<PlayerMotor>();
 
         joint = GetComponent<ConfigurableJoint>();
@@ -45,6 +57,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool forwardPressed = Input.GetKey(KeyCode.W);
+        bool backwardPressed = Input.GetKey(KeyCode.S);
         //  if (!IsOwner) return;
 
         //Calculate movement velocity as a 3D vector
@@ -60,7 +74,9 @@ public class PlayerController : MonoBehaviour
         motor.Move(_velocity);
 
         //Animate movement
-        animator.SetFloat("ForwardVelocity", _vInput);
+        animator.SetFloat(velocityHash, velocity);
+        ChangeVelocity(forwardPressed, backwardPressed);
+        LockAndResetVelocity(forwardPressed, backwardPressed);
 
         //calculate rotation as a 3D vector (turning around)
         float _yRot = Input.GetAxisRaw("Mouse X");
@@ -97,9 +113,46 @@ public class PlayerController : MonoBehaviour
 
     void SetJointSettings(float _jointSpring)
     {
-        joint.yDrive = new JointDrive { 
-            positionSpring = _jointSpring, 
+        joint.yDrive = new JointDrive
+        {
+            positionSpring = _jointSpring,
             maximumForce = jointMaxForece
-        }; 
+        };
+    }
+
+    void ChangeVelocity(bool forwardPressed, bool backwardPressed)
+    {
+        if (forwardPressed && velocity < maxVelocity && !backwardPressed)
+        {
+            velocity += Time.deltaTime * acceleration;
+        }
+        if (!forwardPressed && velocity > minVelocity)
+        {
+            velocity -= Time.deltaTime * deceleration;
+        }
+        if (backwardPressed && velocity > -maxVelocity)
+        {
+            velocity -= Time.deltaTime * acceleration;
+        }
+        if (!backwardPressed && velocity < minVelocity)
+        {
+            velocity += Time.deltaTime * deceleration;
+        }
+    }
+
+    void LockAndResetVelocity(bool forwardPressed, bool backwardPressed)
+    {
+        if (forwardPressed && velocity >= maxVelocity && !backwardPressed)
+        {
+            velocity = maxVelocity;
+        }
+        if (backwardPressed && velocity <= -maxVelocity && !forwardPressed)
+        {
+            velocity = -maxVelocity;
+        }
+        if (!forwardPressed && velocity != 0.0f && !backwardPressed && (velocity < 0.05 && velocity > -0.05))
+        {
+            velocity = 0.0f;
+        }
     }
 }
