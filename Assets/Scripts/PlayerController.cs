@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour
     float minVelocity = 0.0f;
     float maxVelocity = 1.0f;
 
-    public float acceleration = 1.0f;
-    public float deceleration = 1.0f;
+    public float acceleration = 5.0f;
+    public float deceleration = 5.0f;
 
     int velocityHash;
 
