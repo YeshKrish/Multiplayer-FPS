@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Player))]
 public class Player_setup : NetworkBehaviour
@@ -12,6 +13,16 @@ public class Player_setup : NetworkBehaviour
     string remoteLayerName = "RemotePlayer";
 
     Camera sceneCamera;
+
+    [SerializeField]
+    string dontDrawLayerName = "DontDraw";
+
+    [SerializeField]
+    GameObject playerGraphics;
+
+    [SerializeField]
+    GameObject crossHair;
+    private GameObject crossHairInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -27,13 +38,27 @@ public class Player_setup : NetworkBehaviour
             if(sceneCamera != null) {
                 sceneCamera.gameObject.SetActive(false);
             }
-            
+
+            //Disable Player Graphics for local player
+            SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
+
+            //Instatntiate PlayerUI
+            crossHairInstance =  Instantiate(crossHair);
+            crossHairInstance.name = crossHair.name;
         }
 
         GetComponent<Player>().Setup();
         ListenChanges();
     }
 
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach(Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
 
     void ListenChanges()
     {
@@ -61,10 +86,13 @@ public class Player_setup : NetworkBehaviour
 
     private void OnDisable()
     {
+        Destroy(crossHairInstance);
+
         if(sceneCamera != null)
         {
             sceneCamera.gameObject.SetActive(true);
         }
+
 
         GameManager.UnRegisterPlayer(transform.name);
     }
