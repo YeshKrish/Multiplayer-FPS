@@ -31,14 +31,31 @@ public class PlayerShoot : NetworkBehaviour
     {
         currentWeapon = weaponManager.GetCurrentWeapon();
 
-        if (Input.GetButtonDown("Fire1"))
+        if(currentWeapon.fireRate <= 0)
         {
-            Shoot();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
+        }
+        else
+        {
+            //Automatic weapon setup
+            if (Input.GetButtonDown("Fire1"))
+            {
+                InvokeRepeating("Shoot", 0f, 1f / currentWeapon.fireRate);
+            }
+            else if (Input.GetButtonUp("Fire1"))
+            {
+                CancelInvoke("Shoot");
+            }
         }
     }
 
     void Shoot()
     {
+        Debug.Log("Test Shooting");
+
         if (!IsClient && !IsLocalPlayer)
         {
             return;
