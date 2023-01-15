@@ -52,6 +52,22 @@ public class PlayerShoot : NetworkBehaviour
         }
     }
 
+
+    //Is called on server when a player shoots
+    [ServerRpc]
+    void OnShootServerRpc()
+    {
+        DoShootEffectsClientRpc();
+    }
+
+
+    //is called on all clients when we needs to do a shoot effect
+    [ClientRpc]
+    void DoShootEffectsClientRpc()
+    {
+        weaponManager.GetCurrentGraphics().muzzleFlash.Play();
+    }
+
     void Shoot()
     {
         Debug.Log("Test Shooting");
@@ -60,6 +76,9 @@ public class PlayerShoot : NetworkBehaviour
         {
             return;
         }
+
+        //We are shooting, call the onShoot method on the server
+        OnShootServerRpc();
         RaycastHit _hit;
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range, layerMask))

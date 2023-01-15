@@ -40,7 +40,7 @@ public class Player_setup : NetworkBehaviour
             }
 
             //Disable Player Graphics for local player
-            SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
+            Util.SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
             //Instatntiate PlayerUI
             crossHairInstance =  Instantiate(crossHair);
@@ -49,15 +49,6 @@ public class Player_setup : NetworkBehaviour
 
         GetComponent<Player>().Setup();
         ListenChanges();
-    }
-
-    void SetLayerRecursively(GameObject obj, int newLayer)
-    {
-        obj.layer = newLayer;
-        foreach(Transform child in obj.transform)
-        {
-            SetLayerRecursively(child.gameObject, newLayer);
-        }
     }
 
     void ListenChanges()

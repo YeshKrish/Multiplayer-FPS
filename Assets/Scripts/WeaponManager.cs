@@ -15,6 +15,7 @@ public class WeaponManager : NetworkBehaviour
     private PlayerWeapon primaryWeapon;
 
     private PlayerWeapon currentWeapon;
+    private WeaponGraphics currentGraphics;
 
     private void Start()
     {
@@ -27,15 +28,25 @@ public class WeaponManager : NetworkBehaviour
         GameObject _weaponInstance = (GameObject)Instantiate(_weapon.graphics, weaponHolder.position, weaponHolder.rotation);
         _weaponInstance.transform.SetParent(weaponHolder);
 
+        currentGraphics = _weaponInstance.GetComponent<WeaponGraphics>();
+        if(currentGraphics == null)
+        {
+            Debug.LogError("No WeaponGraphics component on the weapon object:" + _weaponInstance.name);
+        }
+
         if (IsLocalPlayer)
         {
-            _weaponInstance.layer = LayerMask.NameToLayer(weaponLayerName);
+            Util.SetLayerRecursively(_weaponInstance, LayerMask.NameToLayer(weaponLayerName));
         }
     }
 
     public PlayerWeapon GetCurrentWeapon()
     {
         return currentWeapon;
+    }   
+    public WeaponGraphics GetCurrentGraphics()
+    {
+        return currentGraphics;
     }
 
 }
