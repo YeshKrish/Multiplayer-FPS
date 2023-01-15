@@ -1,17 +1,13 @@
 using UnityEngine;
 using Unity.Netcode;
 
+[RequireComponent(typeof(WeaponManager))]
 public class PlayerShoot : NetworkBehaviour
 {
     private const string PLAYER_TAG = "Player";
 
-    [SerializeField]
-    private PlayerWeapon weapon;
-
-    [SerializeField]
-    private GameObject weaponGFX;
-    [SerializeField]
-    private string weaponLayerName = "Weapon";
+    private PlayerWeapon currentWeapon;
+    private WeaponManager weaponManager;
 
     [SerializeField]
     private Camera cam;
@@ -25,16 +21,16 @@ public class PlayerShoot : NetworkBehaviour
         {
             Debug.LogError("Player Shoot: No camera Referenced");
             this.enabled = false;
-        }
-
-        if(IsLocalPlayer)
-            weaponGFX.layer = LayerMask.NameToLayer(weaponLayerName);
-            
+        }   
+        
+        weaponManager = GetComponent<WeaponManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        currentWeapon = weaponManager.GetCurrentWeapon();
+
         if (Input.GetButtonDown("Fire1"))
         {
             Shoot();
@@ -49,12 +45,12 @@ public class PlayerShoot : NetworkBehaviour
         }
         RaycastHit _hit;
 
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, layerMask))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range, layerMask))
         {
           
             if (_hit.collider.tag == PLAYER_TAG)
             {
-                PlayerShotServerRpc(_hit.collider.name, weapon.damage);
+                PlayerShotServerRpc(_hit.collider.name, currentWeapon.damage);
             }
         }
     }
