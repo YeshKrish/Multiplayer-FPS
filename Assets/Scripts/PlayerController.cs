@@ -14,8 +14,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float lookSentivity = 3f;
 
+    [Header("Thruster Settings")]
     [SerializeField]
     private float trustForce = 1000f;
+    [SerializeField]
+    private float thrusterFuelBurnSpeed = 1f;
+    [SerializeField]
+    private float thrusterFuelRegenSpeed = 1.5f;
+    //Create Regentime for thrusters
+    private float thrusterFuelAmount = 1f;
 
     [Header("Spring Sertings:")]
 
@@ -39,6 +46,11 @@ public class PlayerController : MonoBehaviour
     private PlayerMotor motor;
     private ConfigurableJoint joint;
     private Animator animator;
+
+    public float GetThrusterFuelAmount()
+    {
+        return thrusterFuelAmount;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -97,15 +109,23 @@ public class PlayerController : MonoBehaviour
         //Calculater trust force based on player input
         Vector3 _trusterForce = Vector3.zero;
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && thrusterFuelAmount > 0)
         {
-            _trusterForce = Vector3.up * trustForce;
-            SetJointSettings(0f);
+            thrusterFuelAmount -= thrusterFuelBurnSpeed * Time.deltaTime;
+
+            if(thrusterFuelAmount > 0.01f)
+            {
+                _trusterForce = Vector3.up * trustForce;
+                SetJointSettings(0f);
+            }
         }
         else
         {
+            thrusterFuelAmount += thrusterFuelRegenSpeed * Time.deltaTime;
             SetJointSettings(jointSpring);
         }
+
+        thrusterFuelAmount = Mathf.Clamp(thrusterFuelAmount, 0f, 1f);
 
         //Apply Trust force
         motor.ApplyTruster(_trusterForce);

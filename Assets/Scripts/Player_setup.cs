@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Player))]
+[RequireComponent(typeof(PlayerController))]
 public class Player_setup : NetworkBehaviour
 {
 
@@ -22,7 +23,7 @@ public class Player_setup : NetworkBehaviour
 
     [SerializeField]
     GameObject crossHair;
-    private GameObject crossHairInstance;
+    private GameObject playerUIInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +44,14 @@ public class Player_setup : NetworkBehaviour
             Util.SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
             //Instatntiate PlayerUI
-            crossHairInstance =  Instantiate(crossHair);
-            crossHairInstance.name = crossHair.name;
+            playerUIInstance =  Instantiate(crossHair);
+            playerUIInstance.name = crossHair.name;
+
+            //Configure PlayerUI
+            PlayerUI uI = playerUIInstance.GetComponent<PlayerUI>();
+            if (uI == null)
+                Debug.LogError("No PlayerUI component on PlayerUI prefab");
+            uI.SetController(GetComponent<PlayerController>());
         }
 
         GetComponent<Player>().Setup();
@@ -78,7 +85,7 @@ public class Player_setup : NetworkBehaviour
 
     private void OnDisable()
     {
-        Destroy(crossHairInstance);
+        Destroy(playerUIInstance);
 
         if(sceneCamera != null)
         {
