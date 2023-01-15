@@ -68,6 +68,24 @@ public class PlayerShoot : NetworkBehaviour
         weaponManager.GetCurrentGraphics().muzzleFlash.Play();
     }
 
+    //Is called on server when a bullet hits!
+    //Takes in the hit point and normal of the surface
+    [ServerRpc]
+    void OnHitServerRpc(Vector3 _pos, Vector3 _normal)
+    {
+        DoHitEffectsClientRpc(_pos, _normal);
+    }
+
+
+    //is called on all clients when we bullet hits an object
+    //We spawn cool effects here
+    [ClientRpc]
+    void DoHitEffectsClientRpc(Vector3 _pos, Vector3 _normal)
+    {
+        GameObject _hitEffectInstance = (GameObject)Instantiate(weaponManager.GetCurrentGraphics().hitEffectPrefab, _pos, Quaternion.LookRotation(_normal));
+        Destroy(_hitEffectInstance, 2f);
+    }
+
     void Shoot()
     {
         Debug.Log("Test Shooting");
@@ -88,6 +106,10 @@ public class PlayerShoot : NetworkBehaviour
             {
                 PlayerShotServerRpc(_hit.collider.name, currentWeapon.damage);
             }
+
+            Debug.Log("Object I hit:" + _hit.collider.name);
+            //Wer hit something call the OnHit Method on server
+            OnHitServerRpc(_hit.point, _hit.normal);
         }
     }
 

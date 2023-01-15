@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 2471274754302622908}
-  hitEffectPrefab: {fileID: 0}
+  hitEffectPrefab: {fileID: 1071139533672158784, guid: 989df2ed4862775428bfd6e743764624, type: 3}
 --- !u!1001 &2374756815059393548
 PrefabInstance:
   m_ObjectHideFlags: 0
