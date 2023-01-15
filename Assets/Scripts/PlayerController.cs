@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     //Create Regentime for thrusters
     private float thrusterFuelAmount = 1f;
 
+    [SerializeField]
+    private LayerMask environmentMask;
+
     [Header("Spring Sertings:")]
 
     [SerializeField]
@@ -69,6 +72,19 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Setting target position for spring
+        //this makes the physics acts right when it come to
+        //applying gravity when flying over objects
+        RaycastHit _hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out _hit, 100f, environmentMask))
+        {
+            joint.targetPosition = new Vector3(0f, -_hit.point.y, 0f);
+        }
+        else
+        {
+            joint.targetPosition = new Vector3(0f, 0f, 0f);
+        }
+
         bool forwardPressed = Input.GetKey(KeyCode.W);
         bool backwardPressed = Input.GetKey(KeyCode.S);
         //  if (!IsOwner) return;

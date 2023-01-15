@@ -5242,6 +5242,11 @@ MonoBehaviour:
   speed: 5
   lookSentivity: 3
   trustForce: 1300
+  thrusterFuelBurnSpeed: 1
+  thrusterFuelRegenSpeed: 1.5
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 1024
   jointSpring: 20
   jointMaxForece: 40
   acceleration: 1
