@@ -21,13 +21,10 @@ public class Player_setup : NetworkBehaviour
 
     [SerializeField]
 <<<<<<< HEAD
-<<<<<<< HEAD
     GameObject playerUI;
     [HideInInspector]
     public GameObject playerUIInstance;
 =======
-=======
->>>>>>> parent of 43e3892 (Explosion effects)
     GameObject crossHair;
     private GameObject playerUIInstance;
 >>>>>>> parent of 43e3892 (Explosion effects)
