@@ -88,8 +88,6 @@ public class PlayerShoot : NetworkBehaviour
 
     void Shoot()
     {
-        Debug.Log("Test Shooting");
-
         if (!IsClient && !IsLocalPlayer)
         {
             return;
@@ -107,7 +105,6 @@ public class PlayerShoot : NetworkBehaviour
                 PlayerShotServerRpc(_hit.collider.name, currentWeapon.damage);
             }
 
-            Debug.Log("Object I hit:" + _hit.collider.name);
             //Wer hit something call the OnHit Method on server
             OnHitServerRpc(_hit.point, _hit.normal);
         }
