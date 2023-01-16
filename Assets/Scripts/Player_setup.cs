@@ -13,8 +13,6 @@ public class Player_setup : NetworkBehaviour
     [SerializeField]
     string remoteLayerName = "RemotePlayer";
 
-    Camera sceneCamera;
-
     [SerializeField]
     string dontDrawLayerName = "DontDraw";
 
@@ -23,7 +21,8 @@ public class Player_setup : NetworkBehaviour
 
     [SerializeField]
     GameObject playerUI;
-    private GameObject playerUIInstance;
+    [HideInInspector]
+    public GameObject playerUIInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +34,6 @@ public class Player_setup : NetworkBehaviour
         }
         else
         {
-            sceneCamera = Camera.main;
-            if(sceneCamera != null) {
-                sceneCamera.gameObject.SetActive(false);
-            }
-
             //Disable Player Graphics for local player
             Util.SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
@@ -52,9 +46,9 @@ public class Player_setup : NetworkBehaviour
             if (uI == null)
                 Debug.LogError("No PlayerUI component on PlayerUI prefab");
             uI.SetController(GetComponent<PlayerController>());
+            GetComponent<Player>().SetupPlayer();
         }
 
-        GetComponent<Player>().Setup();
         ListenChanges();
     }
 
@@ -83,15 +77,15 @@ public class Player_setup : NetworkBehaviour
         }
     }
 
+    //When we destroyed
     private void OnDisable()
     {
         Destroy(playerUIInstance);
 
-        if(sceneCamera != null)
+        if (IsLocalPlayer)
         {
-            sceneCamera.gameObject.SetActive(true);
+            GameManager.instance.SetSceneCameraActive(true);
         }
-
 
         GameManager.UnRegisterPlayer(transform.name);
     }

@@ -16,31 +16,30 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField]
     private Button clientBtn;
 
+    [SerializeField]
+    GameObject networkUI;
+
     private void Awake()
     {
         hostBtn.onClick.AddListener(() =>
         {
+            DisableNetworkGameObject();
             NetworkManager.Singleton.StartHost();
         });
         serverBtn.onClick.AddListener(() =>
         {
+            DisableNetworkGameObject();
             NetworkManager.Singleton.StartServer();
         });
         clientBtn.onClick.AddListener(() =>
         {
+            DisableNetworkGameObject();
             NetworkManager.Singleton.StartClient();
         });
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void DisableNetworkGameObject()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        networkUI.SetActive(false);
     }
 }

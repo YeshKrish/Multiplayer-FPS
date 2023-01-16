@@ -289,6 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matchSettings:
     respawnDelay: 3
+  sceneCamera: {fileID: 2028893323}
 --- !u!4 &305800431
 Transform:
   m_ObjectHideFlags: 0
@@ -311,10 +312,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1177918375}
     m_Modifications:
-    - target: {fileID: 7436408284486996600, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -425,6 +422,7 @@ MonoBehaviour:
   hostBtn: {fileID: 1643481473}
   serverBtn: {fileID: 1901211784}
   clientBtn: {fileID: 1299525538}
+  networkUI: {fileID: 624485304}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,7 +1999,7 @@ GameObject:
   - component: {fileID: 2102189586}
   - component: {fileID: 2102189585}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: NetworkSwitcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
