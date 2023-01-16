@@ -23,6 +23,7 @@ public class Player : NetworkBehaviour
     private bool[] wasEnabled;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     [SerializeField]
     private GameObject[] disableGameObjectOnDeath;
 
@@ -32,6 +33,8 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private GameObject spawnEffect;
 
+=======
+>>>>>>> parent of 43e3892 (Explosion effects)
 =======
 >>>>>>> parent of 43e3892 (Explosion effects)
     private NetworkVariable<int> _currentHealth = new NetworkVariable<int>();
@@ -147,10 +150,13 @@ public class Player : NetworkBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         //Call death effect
         OnDeathEffectServerRpc();
 
         //Disable colliders
+=======
+>>>>>>> parent of 43e3892 (Explosion effects)
 =======
 >>>>>>> parent of 43e3892 (Explosion effects)
         Collider _col = GetComponent<Collider>();
@@ -160,6 +166,7 @@ public class Player : NetworkBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         //Here we switch camera
         if (IsLocalPlayer)
         {
@@ -167,6 +174,8 @@ public class Player : NetworkBehaviour
             GetComponent<Player_setup>().playerUIInstance.SetActive(false);
         }
 
+=======
+>>>>>>> parent of 43e3892 (Explosion effects)
 =======
 >>>>>>> parent of 43e3892 (Explosion effects)
         Debug.Log(transform.name + " is Dead");
