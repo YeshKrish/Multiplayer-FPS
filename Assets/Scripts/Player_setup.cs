@@ -20,9 +20,14 @@ public class Player_setup : NetworkBehaviour
     GameObject playerGraphics;
 
     [SerializeField]
+<<<<<<< HEAD
     GameObject playerUI;
     [HideInInspector]
     public GameObject playerUIInstance;
+=======
+    GameObject crossHair;
+    private GameObject playerUIInstance;
+>>>>>>> parent of 43e3892 (Explosion effects)
 
     // Start is called before the first frame update
     void Start()
@@ -38,8 +43,8 @@ public class Player_setup : NetworkBehaviour
             Util.SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
             //Instatntiate PlayerUI
-            playerUIInstance =  Instantiate(playerUI);
-            playerUIInstance.name = playerUI.name;
+            playerUIInstance =  Instantiate(crossHair);
+            playerUIInstance.name = crossHair.name;
 
             //Configure PlayerUI
             PlayerUI uI = playerUIInstance.GetComponent<PlayerUI>();
