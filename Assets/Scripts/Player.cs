@@ -98,6 +98,16 @@ public class Player : NetworkBehaviour
             disableOnDeath[i].enabled = wasEnabled[i];
         }
 
+        ////Enable the GameObjects 
+        //for (int i = 0; i < disableGameObjectOnDeath.Length; i++)
+        //{
+        //    disableGameObjectOnDeath[i].SetActive(true);
+        //}
+
+        ////Spawn effects
+        //GameObject spawnEffectInstance = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
+        //Destroy(spawnEffectInstance, 3f);
+
         //Enable the GameObjects 
         Collider _col = GetComponent<Collider>();
         if(_col != null)
@@ -133,11 +143,8 @@ public class Player : NetworkBehaviour
             disableOnDeath[i].enabled = false;
         }
 
-        //Disable GameObjects
-        for (int i = 0; i < disableGameObjectOnDeath.Length; i++)
-        {
-            disableGameObjectOnDeath[i].SetActive(false);
-        }
+        //Call death effect
+        OnDeathEffectServerRpc();
 
         //Disable colliders
         Collider _col = GetComponent<Collider>();
@@ -149,14 +156,11 @@ public class Player : NetworkBehaviour
         //Here we switch camera
         if (IsLocalPlayer)
         {
-            Debug.Log("Activation SceneCamera and disabling UI");
             GameManager.instance.SetSceneCameraActive(true);
             GetComponent<Player_setup>().playerUIInstance.SetActive(false);
         }
 
         Debug.Log(transform.name + " is Dead");
-        //Call death effect
-        OnDeathEffectServerRpc();
 
         //call respawn method
         StartCoroutine(Respawn(transform.name));
@@ -214,14 +218,15 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     void DoDeathEffectsClientRpc()
     {
+
+        GameObject deathEffectInstance = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(deathEffectInstance, 10f);
+
         //Disable GameObjects
         for (int i = 0; i < disableGameObjectOnDeath.Length; i++)
         {
             disableGameObjectOnDeath[i].SetActive(false);
         }
-
-        GameObject deathEffectInstance = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-        Destroy(deathEffectInstance, 10f);
 
     }
 }
