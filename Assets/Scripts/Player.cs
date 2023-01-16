@@ -21,6 +21,9 @@ public class Player : NetworkBehaviour
     private Behaviour[] disableOnDeath;
     private bool[] wasEnabled;
 
+    [SerializeField]
+    private GameObject deathEffect;
+
     private NetworkVariable<int> _currentHealth = new NetworkVariable<int>();
     public int currentHealth
     {
@@ -94,11 +97,16 @@ public class Player : NetworkBehaviour
             disableOnDeath[i].enabled = false;
         }
 
+        //Disable colliders
         Collider _col = GetComponent<Collider>();
         if (_col != null)
         {
             _col.enabled = false;
         }
+
+        //Spawn a death effect
+        GameObject deathEffectInstance = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(deathEffectInstance, 3f);
 
         Debug.Log(transform.name + " is Dead");
 

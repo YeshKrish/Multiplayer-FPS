@@ -22,7 +22,7 @@ public class Player_setup : NetworkBehaviour
     GameObject playerGraphics;
 
     [SerializeField]
-    GameObject crossHair;
+    GameObject playerUI;
     private GameObject playerUIInstance;
 
     // Start is called before the first frame update
@@ -44,8 +44,8 @@ public class Player_setup : NetworkBehaviour
             Util.SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
 
             //Instatntiate PlayerUI
-            playerUIInstance =  Instantiate(crossHair);
-            playerUIInstance.name = crossHair.name;
+            playerUIInstance =  Instantiate(playerUI);
+            playerUIInstance.name = playerUI.name;
 
             //Configure PlayerUI
             PlayerUI uI = playerUIInstance.GetComponent<PlayerUI>();

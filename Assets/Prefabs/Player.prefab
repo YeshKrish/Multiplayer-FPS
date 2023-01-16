@@ -5314,7 +5314,7 @@ MonoBehaviour:
   remoteLayerName: RemotePlayer
   dontDrawLayerName: DontDraw
   playerGraphics: {fileID: 2543676135851537275}
-  crossHair: {fileID: 4023416738615976734, guid: a09d3744fb95eef47870399a02318dfe, type: 3}
+  playerUI: {fileID: 4023416738615976734, guid: a09d3744fb95eef47870399a02318dfe, type: 3}
 --- !u!153 &5405267582348810848
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -5444,6 +5444,7 @@ MonoBehaviour:
   disableOnDeath:
   - {fileID: 2543676135295774401}
   - {fileID: 7159045052574085899}
+  deathEffect: {fileID: 3082903705908287958, guid: 3c109591302d2004c9cb6f6c5804d6d3, type: 3}
 --- !u!95 &5960189868538967860
 Animator:
   serializedVersion: 4
