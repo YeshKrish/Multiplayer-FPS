@@ -1,10 +1,18 @@
 using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
+//using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
 {
     private NetworkVariable<bool> _isDead = new NetworkVariable<bool>(false);
+
+    private int _presentScene;
+
+    //private void Awake()
+    //{
+    //    _presentScene =  SceneManager.GetActiveScene().buildIndex;
+    //}
     public bool isDead
     {
         get { return _isDead.Value; }
@@ -126,6 +134,7 @@ public class Player : NetworkBehaviour
     {
         Player _player = GameManager.GetPlayer(_playerID);
         Debug.Log("The player who dies is:" + _player.transform.name);
+        //SceneManager.LoadScene(_presentScene);
         _player.transform.position = spawnPoint.position;
         Debug.Log("I am Respawned" + _player.name + "Position:" + _player.transform.position);
         SetDefaults();
